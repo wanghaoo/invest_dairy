@@ -2,6 +2,7 @@ package admin
 
 import (
 	"invest_dairy/common"
+	"invest_dairy/service/admin"
 	"invest_dairy/util"
 
 	"github.com/yb7/echoswg"
@@ -17,6 +18,6 @@ func getCapitalPoolDetail() *common.ResponseData {
 	return admin.GetCapitalPoolDetail()
 }
 
-func addMoney(req *struct{Body struct{Moeny float64}}) *common.ResponseData {
+func addMoney(req *struct{Body struct{Moeny int}}) *common.ResponseData {
 	return admin.AddMoney(req.Body.Moeny)
 }

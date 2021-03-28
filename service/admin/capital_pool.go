@@ -17,3 +17,34 @@ func AddMoney(money int) *common.ResponseData {
 	}
 	return common.CommonSuccess()
 }
+
+type CapitailPoolDetailVo struct {
+	TotalMoeny    int64
+	PositionMoney int64
+	IncomeMoeny   int64
+	RiskMoeny     int64
+}
+
+func GetCapitalPoolDetail() *common.ResponseData {
+	result := CapitailPoolDetailVo{}
+	totalMoney, err := admin.QueryTotalMoney()
+	if err != nil {
+		common.Mlog.Errorf("query total money error: %s", err.Error())
+		common.CommonError()
+	}
+	positionMoney, err := admin.QueryPositionStockMeony()
+	if err != nil {
+		common.Mlog.Errorf("query position stock money error: %s", err.Error())
+		return common.CommonError()
+	}
+	incomeMoeny, riskMoney, err := admin.QueryIncomeMoney()
+	if err != nil {
+		common.Mlog.Errorf("query income money error: %s", err.Error())
+		return common.CommonError()
+	}
+	result.TotalMoeny = totalMoney
+	result.PositionMoney = positionMoney
+	result.IncomeMoeny = incomeMoeny
+	result.RiskMoeny = riskMoney
+	return common.SetData(result)
+}
