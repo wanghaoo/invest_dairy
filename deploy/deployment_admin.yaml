@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invest_dairy-admin
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: invest_dairy-admin
+  template:
+    metadata:
+      labels:
+        app: invest_dairy-admin
+    spec:
+      containers:
+        - name: invest_dairy-admin
+          image: registry.ap-south-1.aliyuncs.com/indiarupeeloan/great/invest_dairy-admin:1.1
+          ports:
+          - containerPort: 80
+          - containerPort: 3001
+          env:
+          - name: GOROOT
+            value: /usr/local/go
+          - name: GOPATH
+            value: /go
+      imagePullSecrets:
+        - name: syl-docker-secret

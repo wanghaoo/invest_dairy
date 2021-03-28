@@ -1,0 +1,16 @@
+.idea
+crawled_data
+vendor
+casper_logs
+settings/pre.json
+settings/prod.json
+settings/test.json
+vmiquery
+.DS_Store
+current.pid
+dump.rdb
+deploy/main
+glide.lock
+testdata
+go.mod
+go.sum
