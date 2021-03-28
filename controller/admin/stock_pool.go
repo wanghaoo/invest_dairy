@@ -16,8 +16,8 @@ func init() {
 	e.POST("/dairy", validateSysUser, addStockDairy, "添加股票日记")
 }
 
-func getStockPoolDetail() *common.ResponseData {
-	return admin.GetStockPoolDetail()
+func getStockPoolDetail(req *struct{ma.StockDetailCountFilter}) *common.ResponseData {
+	return admin.GetStockPoolDetail(req.StockDetailCountFilter)
 }
 
 func queryAllStock() *common.ResponseData {
