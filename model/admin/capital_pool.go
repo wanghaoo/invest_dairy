@@ -29,14 +29,14 @@ func QueryIncomeMoney() (int64, int64, error) {
 	}
 	if err != nil {
 		common.Mlog.Errorf("query income money erro: %s", err.Error())
-		return result, err
+		return result, dangerMoeny, err
 	}
 	for rows.Next() {
 		var number float64
 		var inPrice, outPrice, newstPrice, dangerPrice float64
 		if err := rows.Scan(&inPrice, &outPrice, &dangerPrice, &newstPrice); err != nil {
 			common.Mlog.Errorf("scan income money error: %s", err.Error())
-			return result, err
+			return result, dangerMoeny, err
 		}
 		if outPrice > 0 {
 			result += int64(number * (outPrice - inPrice))
