@@ -18,6 +18,6 @@ func getCapitalPoolDetail() *common.ResponseData {
 	return admin.GetCapitalPoolDetail()
 }
 
-func addMoney(req *struct{Body struct{Moeny int}}) *common.ResponseData {
-	return admin.AddMoney(req.Body.Moeny)
+func addMoney(req *struct{Body struct{Money int}}) *common.ResponseData {
+	return admin.AddMoney(req.Body.Money)
 }

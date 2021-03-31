@@ -23,6 +23,7 @@ type CapitailPoolDetailVo struct {
 	PositionMoney int64
 	IncomeMoeny   int64
 	RiskMoeny     int64
+	Pool          []admin.CapitalPool
 }
 
 func GetCapitalPoolDetail() *common.ResponseData {
@@ -42,9 +43,15 @@ func GetCapitalPoolDetail() *common.ResponseData {
 		common.Mlog.Errorf("query income money error: %s", err.Error())
 		return common.CommonError()
 	}
+	pool, err := admin.QueryCapitalPool()
+	if err != nil {
+		common.Mlog.Errorf("query capital pool error: %s", err.Error())
+		return common.CommonError()
+	}
 	result.TotalMoeny = totalMoney
 	result.PositionMoney = positionMoney
 	result.IncomeMoeny = incomeMoeny
 	result.RiskMoeny = riskMoney
+	result.Pool = pool
 	return common.SetData(result)
 }

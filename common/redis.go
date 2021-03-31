@@ -7,7 +7,7 @@ import (
 var RedisCache *redis.Client
 
 const (
-  ADDR = "great-redis.redis.ap-south-1.rds.aliyuncs.com:6379"
+  ADDR = "great-redis-out.redis.ap-south-1.rds.aliyuncs.com:6379"
   PWD  = "20RG8Yh72E"
 )
 

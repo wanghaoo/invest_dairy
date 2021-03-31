@@ -1,6 +1,9 @@
 package admin
 
-import "invest_dairy/common"
+import (
+	"database/sql"
+	"invest_dairy/common"
+)
 
 type CapitalPool struct {
 	Id         int `gorm:"primaryKey"`
@@ -13,17 +16,17 @@ func (p *CapitalPool) Insert() error {
 }
 
 func QueryPositionStockMeony() (int64, error) {
-	var money int64
+	var money sql.NullInt64
 	err := common.MySQL.Select("sum(in_price * number)").Table("i_stock_pool").
 	Where("out_price = 0").Find(&money).Error
-	return money, err
+	return money.Int64, err
 }
 
 func QueryIncomeMoney() (int64, int64, error) {
 	var result int64
 	var dangerMoeny int64
 	rows, err := common.MySQL.Select("number, in_price, out_price, danger_price, (select price from i_stock_dairy where stock_id = sp.id) newst_price").
-	Table("i_stock_pool").Rows()
+	Table("i_stock_pool sp").Rows()
 	if rows != nil {
 		defer rows.Close()
 	}
@@ -50,4 +53,13 @@ func QueryIncomeMoney() (int64, int64, error) {
 		}
 	}
 	return result, dangerMoeny, nil
+}
+
+func QueryCapitalPool() ([]CapitalPool, error) {
+	result := make([]CapitalPool, 0)
+	err := common.MySQL.Find(&result).Error
+	if err != nil {
+		common.Mlog.Errorf("find capital pool error: %s", err.Error())
+	}
+	return result, err
 }

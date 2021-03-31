@@ -21,7 +21,7 @@ type LoginBo struct {
 
 func Login(bo LoginBo) (*SysUserLoginVo, error) {
 	user := new(SysUserLoginVo)
-	err := common.MySQL.Select("id, user_name,nick_name, avatar").Table("b_sys_user").
+	err := common.MySQL.Select("id, user_name,nick_name, avatar").Table("sys_user").
 		Where("user_name = ?", bo.UserName).
 		Where("password = ?", bo.Password).
 		Where("status = 0").First(&user).Error
@@ -55,7 +55,7 @@ type SysUserVo struct {
 
 func FindSysUser(filter SysUserFilter) ([]SysUserVo, error) {
 	result := make([]SysUserVo, 0)
-	querySql := common.MySQL.Select("id, nick_name, user_name, status").Table("b_sys_user")
+	querySql := common.MySQL.Select("id, nick_name, user_name, status").Table("sys_user")
 	if len(filter.NickName) > 0 {
 		querySql = querySql.Where(fmt.Sprintf("nick_name like '%%%s%%'", filter.NickName))
 	}
