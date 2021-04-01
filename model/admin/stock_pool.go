@@ -20,16 +20,23 @@ func (p *StockPool) Insert() error {
 }
 
 func (p *StockPool) Update() error {
-	err := common.MySQL.Update("out_price", p.OutPrice).Update("out_logic", p.OutLogic).
-		Table("i_stock_pool").Where("id = ?", p.Id).Error
+	err := common.MySQL.Table("i_stock_pool").Where("id = ?", p.Id).
+	Updates(map[string]interface{}{"out_price": p.OutPrice, "out_logic": p.OutLogic, "number": p.Number}).
+	Where("id = ?", p.Id).Error
+	return err
+}
+
+func (p *StockPool) LoadLastByStockCode() error {
+	err := common.MySQL.Model(&p).Where("stock_code = ?", p.StockCode).Order("create_time desc").Limit(1).Error
 	return err
 }
 
 type StockDairy struct {
 	Id         int `gorm:"primaryKey"`
-	StockId    int
+	StockCode  string
 	Price      float64
 	Logic      string
+	Number     int64
 	CreateTime int64
 }
 
@@ -50,14 +57,14 @@ type Stock struct {
 
 func QueryAllStock() ([]Stock, error) {
 	result := make([]Stock, 0)
-	err := common.MySQL.Select("stock_name, stock_code").Model("i_stock_pool").Order("create_time desc").Find(&result).Error
+	err := common.MySQL.Select("stock_name, stock_code").Table("i_stock_pool").Order("create_time desc").Find(&result).Error
 	return result, err
 }
 
 type StockDetailCountFilter struct {
 	StockCode string
 	BeginDate int64
-	EndDate int64
+	EndDate   int64
 }
 
 type StockDetailCountVo struct {
@@ -68,14 +75,19 @@ type StockDetailCountVo struct {
 func GetStockPriceChart(filter StockDetailCountFilter) ([]StockDetailCountVo, error) {
 	result := make([]StockDetailCountVo, 0)
 	err := common.MySQL.Select("create_time as day, price as value").
-	Table("i_stock_dairy").Where("stock_code = ?", filter.StockCode).Order("create_time asc").Find(&result).Error
+		Table("i_stock_dairy").Where("stock_code = ?", filter.StockCode).Order("create_time asc").Find(&result).Error
 	return result, err
 }
 
 func GetStockDetail(stockCode string) ([]StockPool, error) {
 	result := make([]StockPool, 0)
 	err := common.MySQL.Table("i_stock_pool").Where("stock_code = ?", stockCode).
-	Order("create_time asc").Find(&result).Error
+		Order("create_time asc").Find(&result).Error
 	return result, err
-} 
+}
 
+func GetStockDairy(stockCode string) ([]StockDairy, error) {
+	result := make([]StockDairy, 0)
+	err := common.MySQL.Table("i_stock_dairy").Where("stock_code = ?", stockCode).Order("create_time desc").Find(&result).Error
+	return result, err
+}
