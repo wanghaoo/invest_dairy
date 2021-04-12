@@ -21,10 +21,10 @@ rm -rf swagger
 cp -rf ../swagger swagger
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o invest-dairy ../main.go
 
-docker build -t registry.ap-south-1.aliyuncs.com/indiarupeeloan/great/invest-dairy:$nextVersion .
-docker push registry.ap-south-1.aliyuncs.com/indiarupeeloan/great/invest-dairy:$nextVersion
+docker build -t registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion .
+docker push registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion
 rm -rf invest-dairy
-kubectl --kubeconfig $KUBECONFIG_INDIA_ALI set image deployment/invest-dairy invest-dairy=registry.ap-south-1.aliyuncs.com/indiarupeeloan/great/invest-dairy:$nextVersion
+kubectl --kubeconfig $KUBECONFIG_INDIA_ALI set image deployment/invest-dairy invest-dairy=registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion
 sleep 2
 kubectl --kubeconfig $KUBECONFIG_INDIA_ALI get deploy invest-dairy  -o jsonpath='{..image}'
 git add ../
