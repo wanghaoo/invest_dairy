@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-re="registry.ap-south-1.aliyuncs.com/indiarupeeloan/great/([^:]+):([^ ]+)"
+re="registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:([^ ]+)"
 imageStr=$(kubectl --kubeconfig $KUBECONFIG_INDIA_ALI get deploy invest-dairy -o jsonpath='{..image}')
 echo "current version"
-if [[ $imageStr =~ $re ]]; then echo ${BASH_REMATCH[2]}; fi
+if [[ $imageStr =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi
 
 
 if [ $# -eq 0 ];
-then nextVersion=$(./increment_version.sh -p ${BASH_REMATCH[2]});
-else nextVersion=$(./increment_version.sh $1 ${BASH_REMATCH[2]});
+then nextVersion=$(./increment_version.sh -p ${BASH_REMATCH[1]});
+else nextVersion=$(./increment_version.sh $1 ${BASH_REMATCH[1]});
 fi
 
 echo "next version"
