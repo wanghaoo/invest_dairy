@@ -36,15 +36,16 @@ func QueryIncomeMoney() (int64, int64, error) {
 	}
 	for rows.Next() {
 		var number float64
-		var inPrice, outPrice, newstPrice, dangerPrice float64
+		var inPrice, outPrice, dangerPrice float64
+		var newstPrice sql.NullFloat64
 		if err := rows.Scan(&number, &inPrice, &outPrice, &dangerPrice, &newstPrice); err != nil {
 			common.Mlog.Errorf("scan income money error: %s", err.Error())
 			return result, dangerMoeny, err
 		}
 		if outPrice > 0 {
 			result += int64(number * (outPrice - inPrice))
-		} else if (newstPrice > 0) {
-			result += int64(number * (newstPrice - inPrice))
+		} else if (newstPrice.Valid) {
+			result += int64(number * (newstPrice.Float64 - inPrice))
 		} else {
 			result += int64(number * inPrice)
 		}
