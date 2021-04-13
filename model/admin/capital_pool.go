@@ -37,7 +37,7 @@ func QueryIncomeMoney() (int64, int64, error) {
 	for rows.Next() {
 		var number float64
 		var inPrice, outPrice, newstPrice, dangerPrice float64
-		if err := rows.Scan(&inPrice, &outPrice, &dangerPrice, &newstPrice); err != nil {
+		if err := rows.Scan(&number, &inPrice, &outPrice, &dangerPrice, &newstPrice); err != nil {
 			common.Mlog.Errorf("scan income money error: %s", err.Error())
 			return result, dangerMoeny, err
 		}
