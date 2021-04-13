@@ -16,10 +16,10 @@ func (p *CapitalPool) Insert() error {
 }
 
 func QueryPositionStockMeony() (int64, error) {
-	var money sql.NullInt64
+	var money sql.NullFloat64
 	err := common.MySQL.Select("sum(in_price * number)").Table("i_stock_pool").
 	Where("out_price = 0").Find(&money).Error
-	return money.Int64, err
+	return int64(money.Float64), err
 }
 
 func QueryIncomeMoney() (int64, int64, error) {
