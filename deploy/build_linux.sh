@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-re="registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:([^ ]+)"
+re="registry.ap-south-1.aliyuncs.com/indiarupeeloan/invest_dairy:([^ ]+)"
 imageStr=$(kubectl --kubeconfig $KUBECONFIG_INDIA_ALI get deploy invest-dairy -o jsonpath='{..image}')
 echo "current version"
 if [[ $imageStr =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi
@@ -21,10 +21,10 @@ rm -rf swagger
 cp -rf ../swagger swagger
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o invest-dairy ../main.go
 
-docker build -t registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion .
-docker push registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion
+docker build -t registry.ap-south-1.aliyuncs.com/indiarupeeloan/invest_dairy:$nextVersion .
+docker push registry.ap-south-1.aliyuncs.com/indiarupeeloan/invest_dairy:$nextVersion
 rm -rf invest-dairy
-kubectl --kubeconfig $KUBECONFIG_INDIA_ALI set image deployment/invest-dairy invest-dairy=registry.ap-south-1.aliyuncs.com/indiarupeeloan/great:$nextVersion
+kubectl --kubeconfig $KUBECONFIG_INDIA_ALI set image deployment/invest-dairy invest-dairy=registry.ap-south-1.aliyuncs.com/indiarupeeloan/invest_dairy:$nextVersion
 sleep 2
 kubectl --kubeconfig $KUBECONFIG_INDIA_ALI get deploy invest-dairy  -o jsonpath='{..image}'
 git add ../
