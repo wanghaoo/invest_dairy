@@ -25,7 +25,7 @@ func QueryPositionStockMeony() (int64, error) {
 func QueryIncomeMoney() (int64, int64, error) {
 	var result int64
 	var dangerMoeny int64
-	rows, err := common.MySQL.Select("number, in_price, out_price, danger_price, (select price from i_stock_dairy where stock_code = sp.id) newst_price").
+	rows, err := common.MySQL.Select("number, in_price, out_price, danger_price, (select price from i_stock_dairy where stock_code = sp.stock_code) newst_price").
 	Table("i_stock_pool sp").Rows()
 	if rows != nil {
 		defer rows.Close()
