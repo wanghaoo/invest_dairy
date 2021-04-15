@@ -1,9 +1,11 @@
 package admin
 
 import (
+	"fmt"
 	"invest_dairy/common"
 	"invest_dairy/model/admin"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -125,7 +127,7 @@ func GetStockPoolDetail(filter admin.StockDetailCountFilter) *common.ResponseDat
 	result.Number = int64(stocks[len(stocks)-1].Number)
 	result.Moeny = money
 	result.IncomeMoeny = income
-	result.MoneyRate = float64(money) / float64(total) * float64(100)
+	result.MoneyRate, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(money) / float64(total) * float64(100)), 64)
 	result.DangerPrice = dangerPriceChartsData
 	result.StockCount = stocksChartsData
 	result.Dairy = dairy
