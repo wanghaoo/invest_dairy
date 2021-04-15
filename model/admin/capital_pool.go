@@ -47,7 +47,7 @@ func QueryIncomeMoney() (int64, int64, error) {
 		} else if (newstPrice.Valid) {
 			result += int64(number * (newstPrice.Float64 - inPrice))
 		} else {
-			result += int64(number * inPrice)
+			result += 0
 		}
 		if outPrice <= 0 {
 			dangerMoeny += int64(number * inPrice) - int64(number * dangerPrice)
